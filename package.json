@@ -1,0 +1,10 @@
+{
+  "name": "aws-memory-tracker",
+  "version": "1.0.0",
+  "description": "Serverless box memory usage tracker service exposing a REST HTTP interface",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "uuid": "^2.0.3"
+  }
+}
