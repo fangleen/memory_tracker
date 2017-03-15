@@ -8,6 +8,7 @@ provider:
   timeout: 30 # optional, default is 6
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    BUCKET: memory-tracker-all-data
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -18,6 +19,10 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
 
 functions:
   create:
@@ -43,6 +48,13 @@ functions:
           path: preview
           method: get
           cors: true
+  tos3:
+      handler: systeminfo/tos3.tos3
+      events:
+        - http:
+            path: tos3
+            method: get
+            cors: true
 
   get:
     handler: systeminfo/get.get

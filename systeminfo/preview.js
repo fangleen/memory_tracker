@@ -6,7 +6,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const params = {
   TableName: process.env.DYNAMODB_TABLE,
   ProjectionExpression: "createdAt, id, serial, #data.jvmMemInfo, #data.freeInfo.#total," +
-    "#data.freeInfo.used, #data.freeInfo.#free, #data.systemTime, #data.topInfo.processes",
+    "#data.freeInfo.used, #data.freeInfo.#free, #data.systemTime, #data.topInfo",
   ExpressionAttributeNames: {
     "#data": "data",
     "#total": "total",
@@ -32,17 +32,15 @@ var sendResponse = (err, items, callback) => {
             freeMem: record.data.jvmMemInfo.freeMem,
             inUseMem: record.data.jvmMemInfo.inUseMem,
             coreNum: record.data.jvmMemInfo.coreNum,
-            maxMem: record.data.jvmMemInfo.maxMem
+            maxMem: record.data.jvmMemInfo.maxMem,
           },
           freeInfo: {
             total: record.data.freeInfo.total,
             used: record.data.freeInfo.used,
-            free: record.data.freeInfo.free
+            free: record.data.freeInfo.free,
           },
-          topInfo: {
-            processes: record.data.topInfo.processes
-          },
-          systemTime: record.data.systemTime
+          topInfo: record.data.topInfo,
+          systemTime: record.data.systemTime,
         }
       }
     })),
